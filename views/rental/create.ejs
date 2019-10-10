@@ -1,0 +1,54 @@
+<%- include('components/nav') %>
+<%- include('components/jumbotron') %>
+
+<h2>Property Create form</h2>
+<form action="/rental/create" method="POST">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Property title:</label>
+            <input type="text" class="form-control" name="Rental[propertyTitle]" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Image URL:</label>
+            <input type="url" class="form-control" name="Rental[imageURL]" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Estate:</label><br>
+            <select id="Estate" class="form-control" name="Rental[estate]" required>
+                <option value="Festival City">Festival City</option>
+                <option value="Tin Ma Court">Tin Ma Court</option>
+                <option value="City One Shatin">City One Shatin</option>
+            </select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Bedrooms:</label>
+            <input type="number" class="form-control" name="Rental[bedrooms]" required max="10" min="1">
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Gross Area:</label>
+            <input type="number" class="form-control" name="Rental[grossArea]" min="1" max="5000" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Expected Tenants:</label>
+            <input type="number" class="form-control" name="Rental[expectedTenants]" min="1" max="10" required>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Rent:</label>
+            <input type="number" class="form-control" name="Rental[rent]" min="1" max="5000000" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <input name="Rental[box]" type="checkbox" value="dummy">
+            <label>Highlighted Property</label>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+</div>
+<br><br>

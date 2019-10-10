@@ -1,0 +1,17 @@
+<!--admin.ejs-->
+
+<%- include('components/nav') %>
+<%- include('components/jumbotron') %>
+<table class="table">
+    <% count = 1 %>
+    <% rentals.forEach(function(model) { %>
+    <tr>
+        <td><%= count %></td>
+        <td><%= model.propertyTitle %></td>
+        <td><%= model.Estate %></td>
+        <td><a href="update/<%= model.id %>">Edit</a>></td>
+    <tr>
+        <%  count += 1; %>
+        <%  }); %>
+</table>
+</div>

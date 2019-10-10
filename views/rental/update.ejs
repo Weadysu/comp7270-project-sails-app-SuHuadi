@@ -1,0 +1,73 @@
+<%- include('components/nav') %>
+<%- include('components/jumbotron') %>
+
+<form action="/rental/update/<%= rental.id %>" method="POST">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Property title:</label>
+            <input type="text" class="form-control" name="Rental[propertyTitle]" value="<%= rental.propertyTitle %>"
+                required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Image URL:</label>
+            <input type="text" class="form-control" name="Rental[imageURL]" value="<%= rental.imageURL %>" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>estate:</label><br>
+            <select class="form-control" onclick="selectestate(this)">
+                <option value="<%= rental.estate %>"><%= rental.estate %></option>
+                <% var selections = ['Festival City', 'Tin Ma Court', 'City One Shatin']; %>
+                <% Array.prototype.remove = function(val) { %>
+                <% var index = this.indexOf(val); %>
+                <% if (index > -1) {this.splice(index, 1);}; %>
+                <% }; %>
+                <% selections.remove(rental.estate); %>
+                <% selections.forEach(function(item){ %>
+                <option value="<%= item %>"><%= item %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>bedrooms:</label>
+            <input type="number" class="form-control" name="Rental[bedrooms]" value="<%= rental.bedrooms %>" required
+                max="5" min="1">
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Gross Area:</label>
+            <input type="number" class="form-control" name="Rental[grossArea]" value="<%= rental.grossArea %>" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>Expected Tenants:</label>
+            <input type="number" class="form-control" name="Rental[expectedTenants]"
+                value="<%= rental.expectedTenants %>" required>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <label>rent:</label>
+            <input type="number" class="form-control" name="Rental[rent]" value="<%= rental.rent %>" required>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <input name="box" type="checkbox" value="dummy">
+            <label>Highlighted Property</label>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+
+<form action="/rental/delete/<%= rental.id %>" method="POST">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
+            <br>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+
+</form>
+</div>
+<br><br><br>
