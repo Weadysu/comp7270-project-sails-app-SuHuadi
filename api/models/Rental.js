@@ -12,11 +12,39 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    grossArea: {
-      type: 'ref',
-      columnType: 'number',
-    }
 
+    propertyTitle: {
+      type: 'string',
+    },
+
+    imageURL: {
+      type: 'string',
+    },
+
+    estate: {
+      type: 'string',
+    },
+
+    bedrooms: {
+      type: 'string',
+    },
+
+    grossArea: {
+      type: 'number',
+    },
+
+    expectedTenants: {
+      type: 'string',
+    },
+
+    rent: {
+      type: 'number',
+    },
+
+    box: {
+      type: 'string',
+    },
+    
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝

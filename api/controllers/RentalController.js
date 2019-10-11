@@ -111,6 +111,7 @@ module.exports = {
 
     // action - paginate
     search: async function (req, res) {
+
         if (req.method == 'GET') {
             const qPage = Math.max(req.query.page - 1, 0) || 0;
 
@@ -124,35 +125,24 @@ module.exports = {
             var numOfPage = Math.ceil(await Rental.count() / numOfItemsPerPage);
 
             return res.view('rental/search', { rentals: models, count: numOfPage });
+
         };
 
         if (req.method == 'POST') {
-            const qPage = Math.max(req.query.page - 1, 0) || 0;
             const numOfItemsPerPage = 2;
-            var count = Rental.count({
+
+            var models = await Rental.find({
                 where: {
-                    estate: req.body.estate,
-                    bedrooms: req.body.bedrooms,
-                    grossArea: { '>=': 100 , '<=': 300 },
-                    rent: { '>=': 10000, '<=': 20000 },
+                    estate: req.body.Rental.estate,
+                    bedrooms: req.body.Rental.bedrooms,
+                    grossArea: { '>=': parseInt(req.body.Rental.minArea), '<=': parseInt(req.body.Rental.maxArea) },
+                    rent: { '>=': parseInt(req.body.Rental.minRent), '<=': parseInt(req.body.Rental.maxRent) },
                 },
             });
-
-            var models = Rental.find({
-                where: {
-                    estate: req.body.estate,
-                    bedrooms: req.body.bedrooms,
-                    grossArea: { '>=': 100 , '<=': 300 },
-                    rent: { '>=': 10000, '<=': 20000 },
-                },
-                limit: numOfItemsPerPage,
-                skip: numOfItemsPerPage * qPage
-            });
-
-
-            var numOfPage = Math.ceil(await count / numOfItemsPerPage);
-
-            return res.view('rental/search', { rentals: models, count: numOfPage });
+            
+            var numOfPage = Math.min(Math.ceil(models.length / numOfItemsPerPage), 6);
+     
+            return res.view('rental/search', { rentals: models.slice(0,1), count: numOfPage });
         };
 
     },

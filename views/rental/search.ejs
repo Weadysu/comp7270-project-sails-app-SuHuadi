@@ -14,69 +14,128 @@
     </div>
     <% }); %>
 
+
+    <% if ((req.method == 'GET' && Object.keys(req.query).length === 0 ) || (req.method == 'GET' && req.query.initFlag == '1')) { %>
     <% const current = parseInt(req.query.page) || 1; %>
     <div class="col-12 col-sm-6 col-lg-4 col-xl-4">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href="/rental/search/?page=<%= Math.max(current-1, 1) %>">Previous</a>
+                    <a class="page-link" href="/rental/search/?page=<%= Math.max(current-1, 1) %>&initFlag=1">Previous</a>
                 </li>
 
                 <% for (i = 1; i <= count; i++) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/rental/search/?page=<%= i %>"><%= i %></a>
+                    <a class="page-link" href="/rental/search/?page=<%= i %>&initFlag=1"><%= i %></a>
+                </li>
+                <% }; %>
+
+                <li class="page-item">
+                    <a class="page-link" href="/rental/search/?page=<%= Math.min(current+1, count) %>&initFlag=1">Next</a>
+                </li>
+            </ul>
+        </nav>
+    
+    <% }; %>
+
+
+    <% if (req.method == 'GET' && req.query.initFlag == '0') { %>
+    <% const current = parseInt(req.query.page) || 1; %>
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search/?page=<%= Math.max(current-1, 1) %>&initFlag=0&estate=<%= req.query.estate %>&bedrooms=<%= req.query.bedrooms %>&minArea=<%= req.query.minArea %>&maxArea=<%= req.query.maxArea %>&minRent=<%= req.query.minRent %>&minRent=<%= req.query.maxRent %>">Previous</a>
+                </li>
+
+                <% for (i = 1; i <= count; i++) { %>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search/?page=<%= i %>&initFlag=0&estate=<%= req.query.estate %>&bedrooms=<%= req.query.bedrooms %>&minArea=<%= req.query.minArea %>&maxArea=<%= req.query.maxArea %>&minRent=<%= req.query.minRent %>&minRent=<%= req.query.maxRent %>"><%= i %></a>
                 </li>
                 <% } %>
 
                 <li class="page-item">
-                    <a class="page-link" href="/rental/search/?page=<%= Math.min(current+1, count) %>">Next</a>
+                    <a class="page-link"
+                        href="/rental/search/?page=<%= Math.min(current+1, count) %>&initFlag=0&estate=<%= req.query.estate %>&bedrooms=<%= req.query.bedrooms %>&minArea=<%= req.query.minArea %>&maxArea=<%= req.query.maxArea %>&minRent=<%= req.query.minRent %>&minRent=<%= req.query.maxRent %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    
+    <% }; %>
+
+
+
+    <% if (req.method == 'POST' ) { %>
+        <% const current = parseInt(req.query.page) || 1; %>
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search/?page=<%= Math.max(current-1, 1) %>&initFlag=0&estate=<%= req.body.Rental.estate %>&bedrooms=<%= req.body.Rental.bedrooms %>&minArea=<%= req.body.Rental.minArea %>&maxArea=<%= req.body.Rental.maxArea %>&minRent=<%= req.body.Rental.minRent %>&minRent=<%= req.body.Rental.maxRent %>">Previous</a>
+                </li>
+
+                <% for (i = 1; i <= count; i++) { %>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search/?page=<%= i %>&initFlag=0&estate=<%= req.body.Rental.estate %>&bedrooms=<%= req.body.Rental.bedrooms %>&minArea=<%= req.body.Rental.minArea %>&maxArea=<%= req.body.Rental.maxArea %>&minRent=<%= req.body.Rental.minRent %>&minRent=<%= req.body.Rental.maxRent %>"><%= i %></a>
+                </li>
+                <% }; %>
+
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search/?page=<%= Math.min(current+1, count) %>&initFlag=0&estate=<%= req.body.Rental.estate %>&bedrooms=<%= req.body.Rental.bedrooms %>&minArea=<%= req.body.Rental.minArea %>&maxArea=<%= req.body.Rental.maxArea %>&minRent=<%= req.body.Rental.minRent %>&minRent=<%= req.body.Rental.maxRent %>">Next</a>
                 </li>
             </ul>
         </nav>
 
-        <h2>Property Search</h2>
-        <form action="/rental/search" method="POST">
-            <div class="form-group">
-                <label class="control-label col-xl-0"><b>Estate:</b></label>
-                <select class="col-8 col-sm-8 col-lg-8 col-xl-10" name="Rental[estate]" required>
-                    <option value>Select estate here</option>
-                    <option value="Festival City">Festival City</option>
-                    <option value="Tin Ma Court">Tin Ma Court</option>
-                    <option value="City One Shatin">City One Shatin</option>
-                </select>
-            </div>
+    <% }; %>
 
-            <div class="form-group">
-                <label class="control-label col-xl-0"><b>Bedrooms</b></label>
-                <input class="col-8 col-sm-8 col-lg-8 col-xl-9" type="number" name="Rental[bedrooms]" required max="5"
-                    min="1">
-            </div>
+    <h2>Property Search</h2>
+    <form action="/rental/search" method="POST">
+        <div class="form-group">
+            <label class="control-label col-xl-0"><b>Estate:</b></label>
+            <select class="col-8 col-sm-8 col-lg-8 col-xl-10" name="Rental[estate]" required>
+                <option value>Select estate here</option>
+                <option value="Festival City">Festival City</option>
+                <option value="Tin Ma Court">Tin Ma Court</option>
+                <option value="City One Shatin">City One Shatin</option>
+            </select>
+        </div>
 
-            <div class="form-group">
-                <label class="control-label"><b>Area(Sq feet):</b></label><br>
+        <div class="form-group">
+            <label class="control-label col-xl-0"><b>Bedrooms</b></label>
+            <input class="col-8 col-sm-8 col-lg-8 col-xl-9" type="number" name="Rental[bedrooms]" required max="5"
+                min="1">
+        </div>
 
-                <label class="control-label"><b>Min:</b></label>
-                <input class="col-8 col-sm-8 col-lg-8 col-xl-4" type="number" name="Rental[minArea]" required
-                    max="10000" min="1">
+        <div class="form-group">
+            <label class="control-label"><b>Area(Sq feet):</b></label><br>
 
-                <label class="control-label"><b>Max:</b></label>
-                <input class="col-8 col-sm-8 col-lg-8 col-xl-5" type="number" name="Rental[maxArea]" required
-                    max="10000" min="1">
-            </div>
+            <label class="control-label"><b>Min:</b></label>
+            <input class="col-8 col-sm-8 col-lg-8 col-xl-4" type="number" name="Rental[minArea]" required max="10000"
+                min="1">
 
-            <div class="form-group">
-                <label class="control-label"><b>Rent(HK$):</b></label><br>
+            <label class="control-label"><b>Max:</b></label>
+            <input class="col-8 col-sm-8 col-lg-8 col-xl-5" type="number" name="Rental[maxArea]" required max="10000"
+                min="1">
+        </div>
 
-                <label class="control-label"><b>Min:</b></label>
-                <input class="col-8 col-sm-8 col-lg-8 col-xl-4" type="number" name="Rental[minRent]" required
-                    max="500000" min="1">
+        <div class="form-group">
+            <label class="control-label"><b>Rent(HK$):</b></label><br>
 
-                <label class="control-label"><b>Max:</b></label>
-                <input class="col-8 col-sm-8 col-lg-8 col-xl-5" type="number" name="Rental[maxRent]" required
-                    max="500000" min="1">
-            </div>
+            <label class="control-label"><b>Min:</b></label>
+            <input class="col-8 col-sm-8 col-lg-8 col-xl-4" type="number" name="Rental[minRent]" required max="500000"
+                min="1">
 
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </div>
+            <label class="control-label"><b>Max:</b></label>
+            <input class="col-8 col-sm-8 col-lg-8 col-xl-5" type="number" name="Rental[maxRent]" required max="500000"
+                min="1">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
 </div>
