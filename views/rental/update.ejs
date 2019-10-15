@@ -16,17 +16,15 @@
 
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
             <label>estate:</label><br>
-            <select class="form-control" onclick="selectestate(this)">
-                <option value="<%= rental.estate %>"><%= rental.estate %></option>
-                <% var selections = ['Festival City', 'Tin Ma Court', 'City One Shatin']; %>
-                <% Array.prototype.remove = function(val) { %>
-                <% var index = this.indexOf(val); %>
-                <% if (index > -1) {this.splice(index, 1);}; %>
-                <% }; %>
-                <% selections.remove(rental.estate); %>
-                <% selections.forEach(function(item){ %>
-                <option value="<%= item %>"><%= item %></option>
-                <% }); %>
+            <select class="form-control" name="Rental[estate]" required>
+                <% var op_FC = (rental.estate == 'Festival City')? 'Selected':''; %>
+                <% var op_TMC = (rental.estate == 'Tin Ma Court')? 'Selected':''; %>
+                <% var op_COH = (rental.estate == 'City One Shatin')? 'Selected':''; %>
+                <option value>Select estate here</option>
+                <option value="Festival City" <%= op_FC %>>Festival City</option>
+                <option value="Tin Ma Court" <%= op_TMC %>>Tin Ma Court</option>
+                <option value="City One Shatin" <%= op_COH %>>City One Shatin</option>
+                
             </select>
         </div>
 
@@ -52,7 +50,7 @@
         </div>
 
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
-            <input name="box" type="checkbox" value="dummy">
+            <input name="Rental[box]" type="checkbox" value="highLighted">
             <label>Highlighted Property</label>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
