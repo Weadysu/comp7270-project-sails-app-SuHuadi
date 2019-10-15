@@ -7,7 +7,7 @@
 
 module.exports = {
 
-    // action - create
+    // create function
     create: async function (req, res) {
 
         if (req.method == 'GET')
@@ -17,10 +17,33 @@ module.exports = {
             return res.badRequest('Form-data not received.');
         var d = new Date().toLocaleDateString('en-US');
 
-        req.body.Rental.date = d;
+        req.body.Rental.createDate = d;
         await Rental.create(req.body.Rental);
         // console.log(req.body.Rental)
         return res.ok("Successfully created!");
+    },
+
+    // index function
+    index: async function (req, res) {
+
+        var models = await Rental.find({
+            where: { box: 'highLighted', },
+            limit: 4,
+            sort: 'id DESC'
+        })
+
+        return res.view('rental/index', { rentals: models });
+
+    },
+
+    // details function
+    details: async function (req, res) {
+        var model = await Rental.findOne({ 'id': req.params.id });
+
+        if (!model) return res.notFound();
+
+        return res.view('rental/details', { rental: model });
+
     },
 
     // json function
@@ -42,10 +65,12 @@ module.exports = {
             return res.view('rental/update', { rental: model });
 
         } else {
-
+            console.log(req.body.Rental.box);
             if (!req.body.Rental)
                 return res.badRequest("Form-data not received.");
 
+            var d = new Date().toLocaleDateString('en-US');
+            req.body.Rental.updateDate = d;
             var models = await Rental.update(req.params.id).set({
                 propertyTitle: req.body.Rental.propertyTitle,
                 imageURL: req.body.Rental.imageURL,
@@ -55,6 +80,7 @@ module.exports = {
                 expectedTenants: req.body.Rental.expectedTenants,
                 rent: req.body.Rental.rent,
                 box: req.body.Rental.box,
+                updateDate: req.body.Rental.updateDate
             }).fetch();
 
             if (models.length == 0) return res.notFound();
@@ -64,31 +90,7 @@ module.exports = {
         }
     },
 
-
-    // action - index
-    index: async function (req, res) {
-
-        var models = await Rental.find({
-            where: { 'box': { '!=': 'dummy' } },
-            limit: 4,
-            sort: 'id DESC'
-        })
-
-        return res.view('rental/index', { rentals: models });
-
-    },
-
-    // details function
-    details: async function (req, res) {
-        var model = await Rental.findOne({ 'id': req.params.id });
-
-        if (!model) return res.notFound();
-
-        return res.view('rental/details', { rental: model });
-
-    },
-
-    // action - delete 
+    // delete function 
     delete: async function (req, res) {
         if (req.method == "GET") return res.forbidden();
 
@@ -102,47 +104,101 @@ module.exports = {
 
     // admin function
     admin: async function (req, res) {
+        const qPage = Math.max(req.query.page - 1, 0) || 0;
+        const numOfItemsPerPage = 4;
 
-        var models = await Rental.find().limit(4);
+        var models = await Rental.find({
+            limit: numOfItemsPerPage,
+            skip: numOfItemsPerPage * qPage
+        });
 
-        return res.view('rental/admin', { rentals: models });
+        var numOfPage = Math.ceil(await Rental.count() / numOfItemsPerPage);
 
+        return res.view('rental/admin', { rentals: models, count: numOfPage, numOfItemsPerPage: numOfItemsPerPage });
     },
 
-    // action - paginate
+    // search function
     search: async function (req, res) {
-
+        // GET method
         if (req.method == 'GET') {
-            const qPage = Math.max(req.query.page - 1, 0) || 0;
+            // initial showing, no search
+            if (Object.keys(req.query).length === 0 || req.query.initFlag == 1) {
+                const qPage = Math.max(req.query.page - 1, 0) || 0;
 
-            const numOfItemsPerPage = 2;
+                const numOfItemsPerPage = 2;
 
-            var models = await Rental.find({
-                limit: numOfItemsPerPage,
-                skip: numOfItemsPerPage * qPage
-            });
+                var models = await Rental.find({
+                    limit: numOfItemsPerPage,
+                    skip: numOfItemsPerPage * qPage
+                });
 
-            var numOfPage = Math.ceil(await Rental.count() / numOfItemsPerPage);
+                var numOfPage = Math.ceil(await Rental.count() / numOfItemsPerPage);
 
-            return res.view('rental/search', { rentals: models, count: numOfPage });
+                return res.view('rental/search', { rentals: models, count: numOfPage });
+            };
+
+            //  specific search
+            if (req.query.initFlag == 0) {
+                const qPage = Math.max(req.query.page - 1, 0) || 0
+                const numOfItemsPerPage = 2;
+
+                if (isNaN(parseInt(req.query.bedrooms))) {
+
+                    var models = await Rental.find({
+                        where: {
+                            estate: {contains: req.query.estate},
+                            grossArea: { '>=': (parseInt(req.query.minArea) || 0), '<=': (parseInt(req.query.maxArea) || 1000) },
+                            rent: { '>=': (parseInt(req.query.minRent) || 0), '<=': (parseInt(req.query.maxRent) || 1000000) },
+                        },
+                    });
+                } else {
+                    var models = await Rental.find({
+                        where: {
+                            estate: {contains: req.query.estate},
+                            bedrooms: parseInt(req.query.bedrooms),
+                            grossArea: { '>=': (parseInt(req.query.minArea) || 0), '<=': (parseInt(req.query.maxArea) || 1000) },
+                            rent: { '>=': (parseInt(req.query.minRent) || 0), '<=': (parseInt(req.query.maxRent) || 1000000) },
+                        },
+                    });
+                };
+
+                var numOfPage = Math.min(Math.ceil(models.length / numOfItemsPerPage), 6);
+                var start = numOfItemsPerPage * qPage;
+
+                return res.view('rental/search', { rentals: models.slice(start, start + 2), count: numOfPage });
+
+            };
+
 
         };
 
+        // POST method
+        // specific search
         if (req.method == 'POST') {
             const numOfItemsPerPage = 2;
+            if (isNaN(parseInt(req.body.Rental.bedrooms))) {
 
-            var models = await Rental.find({
-                where: {
-                    estate: req.body.Rental.estate,
-                    bedrooms: req.body.Rental.bedrooms,
-                    grossArea: { '>=': parseInt(req.body.Rental.minArea), '<=': parseInt(req.body.Rental.maxArea) },
-                    rent: { '>=': parseInt(req.body.Rental.minRent), '<=': parseInt(req.body.Rental.maxRent) },
-                },
-            });
-            
+                var models = await Rental.find({
+                    where: {
+                        estate: {contains: req.body.Rental.estate},
+                        grossArea: { '>=': (parseInt(req.body.Rental.minArea) || 0), '<=': (parseInt(req.body.Rental.maxArea) || 1000) },
+                        rent: { '>=': (parseInt(req.body.Rental.minRent) || 0), '<=': (parseInt(req.body.Rental.maxRent) || 1000000) },
+                    },
+                });
+            } else {
+                var models = await Rental.find({
+                    where: {
+                        estate: {contains: req.body.Rental.estate},
+                        bedrooms: parseInt(req.body.Rental.bedrooms),
+                        grossArea: { '>=': (parseInt(req.body.Rental.minArea) || 0), '<=': (parseInt(req.body.Rental.maxArea) || 1000) },
+                        rent: { '>=': (parseInt(req.body.Rental.minRent) || 0), '<=': (parseInt(req.body.Rental.maxRent) || 1000000) },
+                    },
+                });
+            };
+            console.log(models);
             var numOfPage = Math.min(Math.ceil(models.length / numOfItemsPerPage), 6);
-     
-            return res.view('rental/search', { rentals: models.slice(0,1), count: numOfPage });
+
+            return res.view('rental/search', { rentals: models.slice(0, 2), count: numOfPage });
         };
 
     },
