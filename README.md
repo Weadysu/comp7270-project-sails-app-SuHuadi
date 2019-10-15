@@ -1,7 +1,9 @@
-# project-1
+# project-sails-app
 
 a [Sails v1](https://sailsjs.com) application
 
+### Author
+Su Huadi
 
 ### Links
 
