@@ -20,6 +20,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': 'RentalController.index',
+  'GET /rental/index': 'RentalController.index',
   'GET /rental/create': 'RentalController.create',
   'POST /rental/create': 'RentalController.create',
   'GET /rental/details/:id': 'RentalController.details',
