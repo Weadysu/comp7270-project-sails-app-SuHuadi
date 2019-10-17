@@ -4,18 +4,38 @@
 <div class="row">
 
     <% rentals.forEach( function(model) { %>
-    <div class="card col-12 col-sm-6 col-lg-4 col-xl-6">
-        <a href="rental/details/<%=  model.id %>"><%= model.propertyTitle %></a>
-        <div class="row">
-            <img class="img-fluid img-thumbnail col-12 col-sm-6 col-lg-4 col-xl-4" src="<%= model.imageURL %>" />
-            <ul class="list-group col-12 col-sm-6 col-lg-8 col-xl-8">
-                <li class="list-group-item"><b>Estate: </b><%= model.estate %></li>
-                <li class="list-group-item"><b>Gross Area: </b><%= model.grossArea %> sq feet</li>
-                <li class="list-group-item"><b>Rent: </b>$<%= model.rent %></li>
-            </ul>
+    <div class="card col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div class="container">
+            <br>
+            <h4><a href="rental/details/<%=  model.id %>"><%= model.propertyTitle %></a></h4>
+            <div class="row">
+                <div class="imgWidth col-12 col-sm-12 col-md-4 col-lg-5 col-xl-4">
+                    <img class="rounded" src="<%= model.imageURL %>" style="object-fit: cover;" />
+                </div>
+                <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-8">
+                    <ul class="list-group ">
+                        <li class="list-group-item"><b>Estate: </b><%= model.estate %></li>
+                        <li class="list-group-item"><b>Gross Area: </b><%= model.grossArea %> sq feet</li>
+                        <li class="list-group-item"><b>Rent: </b>$<%= model.rent %></li>
+                    </ul>
+                </div>
+            </div>
+            <br>
         </div>
+
     </div>
     <% }); %>
 
 </div>
 <br>
+
+<script>
+
+    var h = $(".list-group").height();
+    var w = $(".imgWidth").width();
+    document.querySelectorAll("img").forEach(function (item) {
+        item.setAttribute("height", ($(window).width() >= 768)? h:'auto');
+        item.setAttribute("width", w)
+    });
+
+</script>
