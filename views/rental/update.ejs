@@ -1,6 +1,9 @@
+<!--update.ejs-->
+
 <%- include('components/nav') %>
 <%- include('components/jumbotron') %>
 
+<!-- form for updating -->
 <form action="/rental/update/<%= rental.id %>" method="POST">
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
@@ -50,7 +53,8 @@
         </div>
 
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
-            <input name="Rental[box]" type="checkbox" value="highLighted">
+            <% IfChecked = (rental.box == 'highLighted')? 'checked':'' %>
+            <input name="Rental[box]" type="checkbox" value="highLighted" <%= IfChecked %>>
             <label>Highlighted Property</label>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -58,6 +62,7 @@
     </div>
 </form>
 
+<!-- form for deleting -->
 <form action="/rental/delete/<%= rental.id %>" method="POST">
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
