@@ -195,7 +195,7 @@ module.exports = {
                     },
                 });
             };
-            console.log(models);
+           
             var numOfPage = Math.min(Math.ceil(models.length / numOfItemsPerPage), 6);
 
             return res.view('rental/search', { rentals: models.slice(0, 2), count: numOfPage });
