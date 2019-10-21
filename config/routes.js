@@ -29,7 +29,6 @@ module.exports.routes = {
   'POST /rental/update/:id': 'RentalController.update',
   'POST /rental/delete/:id': 'RentalController.delete',
   'GET /rental/search': 'RentalController.search',
-  'POST /rental/search': 'RentalController.search',
   'GET /rental/admin': 'RentalController.admin',
   'GET /rental/json': 'RentalController.json'
   /***************************************************************************
