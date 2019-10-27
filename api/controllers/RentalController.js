@@ -19,7 +19,7 @@ module.exports = {
 
         req.body.Rental.createDate = d;
         await Rental.create(req.body.Rental);
-        // console.log(req.body.Rental)
+        
         return res.ok("Successfully created!");
     },
 
