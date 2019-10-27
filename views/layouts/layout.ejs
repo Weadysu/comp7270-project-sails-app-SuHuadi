@@ -42,7 +42,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>
 
-<body>
+<body onload="navAactive()">
   <%- body %>
 
 
@@ -124,7 +124,26 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <script>
+  function navAactive(){
+    var action = window.location.pathname;
+    var locs = [['/','Home'],
+                ['/rental/search', 'Search'],
+                ['/rental/create', 'Create'],
+                ['/rental/admin', 'Admin']];
+    
+    var loc_id = ''
+    locs.forEach(function(loc){
+      if (action == loc[0]){
+        loc_id = loc[1];
+      }
+    });
 
+    var nav_act = document.getElementById(loc_id);
+    nav_act.setAttribute('class','nav-item nav-link active');
+  };
+
+  </script>
 </body>
 
 </html>
