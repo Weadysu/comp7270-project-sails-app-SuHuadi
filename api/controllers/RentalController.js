@@ -65,7 +65,6 @@ module.exports = {
             return res.view('rental/update', { rental: model });
 
         } else {
-            console.log(req.body.Rental.box);
             if (!req.body.Rental)
                 return res.badRequest("Form-data not received.");
 
@@ -123,7 +122,6 @@ module.exports = {
 
         // initial showing, no search
         if (Object.keys(req.query).length === 0 || req.query.initFlag == 1) {
-            console.log(2);
             const qPage = Math.max(req.query.page - 1, 0) || 0;
 
             const numOfItemsPerPage = 2;
