@@ -118,7 +118,6 @@ module.exports = {
 
     // search function
     search: async function (req, res) {
-        // GET method
 
         // initial showing, no search
         if (Object.keys(req.query).length === 0 || req.query.initFlag == 1) {
@@ -131,8 +130,8 @@ module.exports = {
                 skip: numOfItemsPerPage * qPage
             });
 
-            var numOfPage = Math.ceil(await Rental.count() / numOfItemsPerPage);
-
+            var numOfPage = Math.min(Math.ceil(await Rental.count() / numOfItemsPerPage), 6);
+     
             return res.view('rental/search', { rentals: models, count: numOfPage });
         } else {
             //  specific search
