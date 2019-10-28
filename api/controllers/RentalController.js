@@ -19,7 +19,7 @@ module.exports = {
 
         req.body.Rental.createDate = d;
         await Rental.create(req.body.Rental);
-        
+
         return res.ok("Successfully created!");
     },
 
@@ -119,52 +119,57 @@ module.exports = {
     // search function
     search: async function (req, res) {
 
-        // initial showing, no search
-        if (Object.keys(req.query).length === 0 || req.query.initFlag == 1) {
-            const qPage = Math.max(req.query.page - 1, 0) || 0;
+        const qPage = Math.max(req.query.page - 1, 0) || 0
+        const numOfItemsPerPage = 2;
+        const qEstate = req.query.estate || '';
+        const qBedrooms = parseInt(req.query.bedrooms);
+        const qMinArea = parseInt(req.query.minArea) || 0;
+        const qMaxArea = parseInt(req.query.maxArea) || 1000;
+        const qMinRent = parseInt(req.query.minRent) || 0;
+        const qMaxRent = parseInt(req.query.maxRent) || 100000;
 
-            const numOfItemsPerPage = 2;
+        if (isNaN(qBedrooms)) {
+            var where = {
+                estate: { contains: qEstate },
+                grossArea: { '>=': qMinArea, '<=': qMaxArea },
+                rent: { '>=': qMinRent, '<=': qMaxRent },
+            };
+
+            var numOfItems = await Rental.count({
+                where: where,
+            });
 
             var models = await Rental.find({
+                where: where,
                 limit: numOfItemsPerPage,
                 skip: numOfItemsPerPage * qPage
             });
 
-            var numOfPage = Math.min(Math.ceil(await Rental.count() / numOfItemsPerPage), 6);
-     
-            return res.view('rental/search', { rentals: models, count: numOfPage });
         } else {
-            //  specific search
-            const qPage = Math.max(req.query.page - 1, 0) || 0
-            const numOfItemsPerPage = 2;
-
-            if (isNaN(parseInt(req.query.bedrooms))) {
-
-                var models = await Rental.find({
-                    where: {
-                        estate: { contains: req.query.estate },
-                        grossArea: { '>=': (parseInt(req.query.minArea) || 0), '<=': (parseInt(req.query.maxArea) || 1000) },
-                        rent: { '>=': (parseInt(req.query.minRent) || 0), '<=': (parseInt(req.query.maxRent) || 1000000) },
-                    },
-                });
-            } else {
-                var models = await Rental.find({
-                    where: {
-                        estate: { contains: req.query.estate },
-                        bedrooms: parseInt(req.query.bedrooms),
-                        grossArea: { '>=': (parseInt(req.query.minArea) || 0), '<=': (parseInt(req.query.maxArea) || 1000) },
-                        rent: { '>=': (parseInt(req.query.minRent) || 0), '<=': (parseInt(req.query.maxRent) || 1000000) },
-                    },
-                });
+            var where = {
+                estate: { contains: qEstate },
+                grossArea: { '>=': qMinArea, '<=': qMaxArea },
+                rent: { '>=': qMinRent, '<=': qMaxRent },
+                bedrooms: qBedrooms,
             };
 
-            var numOfPage = Math.min(Math.ceil(models.length / numOfItemsPerPage), 6);
-            var start = numOfItemsPerPage * qPage;
+            var numOfItems = await Rental.count({
+                where: where,
+            });
 
-            return res.view('rental/search', { rentals: models.slice(start, start + 2), count: numOfPage });
-
+            var models = await Rental.find({
+                where: where,
+                limit: numOfItemsPerPage,
+                skip: numOfItemsPerPage * qPage
+            });
         };
+
+        var numOfPage = Math.min(Math.ceil(numOfItems / numOfItemsPerPage), 6);
+
+        return res.view('rental/search', { rentals: models, count: numOfPage });
+
     },
 };
+
 
 
