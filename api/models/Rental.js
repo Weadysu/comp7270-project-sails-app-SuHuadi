@@ -45,6 +45,14 @@ module.exports = {
       type: 'string',
     },
     
+    createDate: {
+      type: 'string',
+    },
+
+    updateDate: {
+      type: 'string',
+    },
+
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
