@@ -30,7 +30,14 @@ module.exports.routes = {
   'POST /rental/delete/:id': 'RentalController.delete',
   'GET /rental/search': 'RentalController.search',
   'GET /rental/admin': 'RentalController.admin',
-  'GET /rental/json': 'RentalController.json'
+  'GET /rental/json': 'RentalController.json',
+
+  'POST /rental/': 'RentalController.create',
+  'GET /rental/:id': 'RentalController.details',
+  'PUT /rental/:id': 'RentalController.update',
+  'DELETE /rental/:id': 'RentalController.delete',
+
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
