@@ -1,0 +1,38 @@
+<!--admin.ejs-->
+
+<%- include('../components/nav') %>
+<%- include('../components/jumbotron') %>
+
+<% const current = parseInt(req.query.page) || 1; %>
+<table class="table">
+    <% c = 1 + numOfItemsPerPage * (current - 1) %>
+    <% rentals.forEach(function(model) { %>
+    <tr>
+        <td><%= c %></td>
+        <td><%= model.propertyTitle %></td>
+        <td><%= model.Estate %></td>
+        <td><a href="/rental/update/<%= model.id %>">Edit</a>></td>
+    <tr>
+        <%  c += 1; %>
+        <%  }); %>
+</table>
+
+<!-- Page navigation -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="/rental/admin/?page=<%= Math.max(current-1, 1) %>">Previous</a>
+        </li>
+
+        <% for (i = 1; i <= count; i++) { %>
+        <li class="page-item">
+            <a class="page-link" href="/rental/admin/?page=<%= i %>"><%= i %></a>
+        </li>
+        <% }; %>
+
+        <li class="page-item">
+            <a class="page-link" href="/rental/admin/?page=<%= Math.min(current+1, count) %>">Next</a>
+        </li>
+    </ul>
+</nav>
+</div>

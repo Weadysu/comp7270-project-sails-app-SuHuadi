@@ -11,7 +11,7 @@ module.exports = {
     create: async function (req, res) {
 
         if (req.method == 'GET')
-            return res.view('rental/create');
+            return res.view('rental/admin/create');
 
         if (!req.body.Rental)
             return res.badRequest('Form-data not received.');
@@ -32,7 +32,7 @@ module.exports = {
             sort: 'id DESC'
         })
         if (req.session.username) {
-            return res.view('rental/index', { rentals: models });
+            return res.view('rental/logined/index', { rentals: models });
         };
 
         return res.view('rental/visitor/index', { rentals: models });
@@ -45,7 +45,13 @@ module.exports = {
 
         if (!model) return res.notFound();
 
-        return res.view('rental/details', { rental: model });
+        if (req.session.username) {
+
+            return res.view('rental/logined/details', { rental: model });
+
+        };
+
+        return res.view('rental/visitor/details', { rental: model });
 
     },
 
@@ -65,7 +71,7 @@ module.exports = {
 
             if (!model) return res.notFound();
 
-            return res.view('rental/update', { rental: model });
+            return res.view('rental/admin/update', { rental: model });
 
         } else {
             if (!req.body.Rental)
@@ -116,7 +122,7 @@ module.exports = {
 
         var numOfPage = Math.ceil(await Rental.count() / numOfItemsPerPage);
 
-        return res.view('rental/admin', { rentals: models, count: numOfPage, numOfItemsPerPage: numOfItemsPerPage });
+        return res.view('rental/admin/admin', { rentals: models, count: numOfPage, numOfItemsPerPage: numOfItemsPerPage });
     },
 
     // search function
@@ -170,7 +176,7 @@ module.exports = {
         var numOfPage = Math.min(Math.ceil(numOfItems / numOfItemsPerPage), 6);
         if (req.session.username) {
 
-            return res.view('rental/search', { rentals: models, count: numOfPage });
+            return res.view('rental/logined/search', { rentals: models, count: numOfPage });
 
         };
 

@@ -1,0 +1,121 @@
+<!--search.ejs-->
+
+<%- include('../components/nav') %>
+<%- include('../components/jumbotron') %>
+
+<div class="row">
+    <% rentals.forEach( function(model){ %>
+    <div class="card col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="row">
+            <div class="imgWeight col-12 col-sm-12 col-md-4 col-md-12 col-lg-12 col-xl-12">
+                <img class="rounded" src="<%= model.imageURL %>" style="object-fit: cover;" width="auto" />
+            </div>
+
+            <div class="imgHeight my-2 col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <h5><a class="m-2" href="/rental/details/<%=  model.id %>"><%= model.propertyTitle %></a></h5>
+                <ul class="list-group m-2 col-12 col-sm-12 col-lg-12 col-xl-12">
+                    <li class="list-group-item"><b>Estate: </b><%= model.estate %></li>
+                    <li class="list-group-item"><b>Gross Area: </b><%= model.grossArea %> sq feet</li>
+                    <li class="list-group-item"><b>Rent: </b>$<%= model.rent %></li>
+                </ul>
+            </div>
+        </div>
+        <br>
+    </div>
+    <% }); %>
+
+    <% const current = parseInt(req.query.page) || 1; %>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search?page=<%= Math.max(current-1, 1) %>&estate=<%= req.query.estate %>&bedrooms=<%= req.query.bedrooms %>&minArea=<%= req.query.minArea %>&maxArea=<%= req.query.maxArea %>&minRent=<%= req.query.minRent %>&maxRent=<%= req.query.maxRent %>">Previous</a>
+                </li>
+
+                <% for (i = 1; i <= count; i++) { %>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search?page=<%= i %>&estate=<%= req.query.estate %>&bedrooms=<%= req.query.bedrooms %>&minArea=<%= req.query.minArea %>&maxArea=<%= req.query.maxArea %>&minRent=<%= req.query.minRent %>&maxRent=<%= req.query.maxRent %>"><%= i %></a>
+                </li>
+                <% } %>
+
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/rental/search?page=<%= Math.min(current+1, count) %>&estate=<%= req.query.estate %>&bedrooms=<%= req.query.bedrooms %>&minArea=<%= req.query.minArea %>&maxArea=<%= req.query.maxArea %>&minRent=<%= req.query.minRent %>&maxRent=<%= req.query.maxRent %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <h2>Property Search</h2>
+            <form action="/rental/search" method="GET">
+                <div class="form-group row">
+                    <% var op_FC = (req.query.estate == 'Festival City')? 'Selected':''; %>
+                    <% var op_TMC = (req.query.estate == 'Tin Ma Court')? 'Selected':''; %>
+                    <% var op_COH = (req.query.estate == 'City One Shatin')? 'Selected':''; %>
+                    <label class="control-label col-3 col-sm-4 col-md-2 col-lg-3 col-xl-3"><b>Estate:</b></label>
+                    <select class="col-9 col-sm-8 col-md-10 col-lg-9 col-xl-9" name="estate">
+                        <option value>Select estate here</option>
+                        <option value="Festival City" <%= op_FC %>>Festival City</option>
+                        <option value="Tin Ma Court" <%= op_TMC %>>Tin Ma Court</option>
+                        <option value="City One Shatin" <%= op_COH %>>City One Shatin</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <% bedrooms= (!req.query.bedrooms)? '':req.query.bedrooms %>
+                    <label class="control-label col-4 col-sm-4 col-md-2 col-lg-5 col-xl-4"><b>Bedrooms:</b></label>
+                    <input class="col-8 col-sm-8 col-md-10 col-lg-7 col-xl-8" type="number" name="bedrooms" min="1"
+                        max="5" value="<%= bedrooms %>">
+                </div>
+
+                <div class="form-group">
+                    <% minArea= (!req.query.minArea)? '':req.query.minArea %>
+
+                    <label class="control-label"><b>Area(Sq feet):</b></label><br>
+                    <div class="row">
+                        <label class="control-label col-4 col-sm-4 col-md-1 col-lg-3 col-xl-2"><b>Min:</b></label>
+                        <input class="col-8 col-sm-8 col-md-5 col-lg-3 col-xl-4" type="number" name="minArea" min="0"
+                            max="1000" value="<%= minArea %>">
+
+                        <% maxArea= (!req.query.maxArea)? '':req.query.maxArea %>
+                        <label class="control-label col-4 col-sm-4 col-md-1 col-lg-3 col-xl-2"><b>Max:</b></label>
+                        <input class="col-8 col-sm-8 col-md-5 col-lg-3 col-xl-4" type="number" name="maxArea" min="0"
+                            max="1000" value="<%= maxArea %>">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <% minRent= (!req.query.minRent)? '':req.query.minRent %>
+                    <label class="control-label"><b>Rent(HK$):</b></label><br>
+                    <div class="row">
+                        <label class="control-label col-4 col-sm-4 col-md-1 col-lg-3 col-xl-2"><b>Min:</b></label>
+                        <input class="col-8 col-sm-8 col-md-5 col-lg-3 col-xl-4" type="number" name="minRent" min="0"
+                            max="100000" value="<%= minRent %>">
+
+                        <% maxRent= (!req.query.maxRent)? '':req.query.maxRent %>
+                        <label class="control-label col-4 col-sm-4 col-md-1 col-lg-3 col-xl-2"><b>Max:</b></label>
+                        <input class="col-8 col-sm-8 col-md-5 col-lg-3 col-xl-4" type="number" name="maxRent" min="0"
+                            max="100000" value="<%= maxRent %>">
+
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br><br>
+<script>
+
+    var imgH = $(".imgHeight").height();
+    var w = $(".imgWeight").width();
+
+    document.querySelectorAll("img").forEach(function (item) {
+        item.height = 1.1 * imgH;
+        item.setAttribute("width", w);
+    });
+
+</script>
