@@ -37,6 +37,13 @@ module.exports.routes = {
   'PUT /rental/:id': 'RentalController.update',
   'DELETE /rental/:id': 'RentalController.delete',
 
+  'GET /user/login': 'UserController.login',
+  'POST /user/login': 'UserController.login',
+  'GET /user/logout': 'UserController.logout',
+  'GET /person/:id/worksFor': 'PersonController.populate',
+  'GET /user/:id/supervises': 'UserController.populate',
+  'POST /user/:id/supervises/add/:fk': 'UserController.add',
+  'POST /user/:id/supervises/remove/:fk': 'UserController.remove',
 
   /***************************************************************************
   *                                                                          *

@@ -6,11 +6,13 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
+        <div class="navbar-nav col-xl-10">
             <a class="nav-item nav-link" id="Home" href="/">Home</a>
             <a class="nav-item nav-link" id="Search" href="/rental/search">Search</a>
             <a class="nav-item nav-link" id="Create" href="/rental/create">Create</a>
             <a class="nav-item nav-link" id="Admin" href="/rental/admin">Admin</a>
         </div>
+        <a class="nav-item nav-link btn btn-outline-info col-xl-2" id="Logiout"
+            href="/user/logout">Hi,<%= req.session.username %>.(Log out)</a>
     </div>
 </nav>

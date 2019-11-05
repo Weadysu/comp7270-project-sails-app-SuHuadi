@@ -19,4 +19,19 @@ module.exports.policies = {
 
   // '*': true,
 
+  RentalController: {
+
+    '*': true,
+    create: 'isAdmin',
+    admin: 'isAdmin',
+
+  },
+
+  UserController: {
+
+    '*':true,
+    populate: 'isClient',
+
+  }
+
 };

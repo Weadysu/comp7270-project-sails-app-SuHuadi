@@ -31,8 +31,11 @@ module.exports = {
             limit: 4,
             sort: 'id DESC'
         })
+        if (req.session.username) {
+            return res.view('rental/index', { rentals: models });
+        };
 
-        return res.view('rental/index', { rentals: models });
+        return res.view('rental/visitor/index', { rentals: models });
 
     },
 
@@ -165,8 +168,13 @@ module.exports = {
         };
 
         var numOfPage = Math.min(Math.ceil(numOfItems / numOfItemsPerPage), 6);
+        if (req.session.username) {
 
-        return res.view('rental/search', { rentals: models, count: numOfPage });
+            return res.view('rental/search', { rentals: models, count: numOfPage });
+
+        };
+
+        return res.view('rental/visitor/search', { rentals: models, count: numOfPage });
 
     },
 };
