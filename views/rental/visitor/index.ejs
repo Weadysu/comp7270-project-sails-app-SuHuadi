@@ -1,0 +1,69 @@
+<!--index.ejs-->
+
+<!-- nav -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+        <div class="navbar-nav col-xl-10">
+            <a class="nav-item nav-link" id="Home" href="/">Home</a>
+            <a class="nav-item nav-link" id="Search" href="/rental/search">Search</a>
+        </div>
+        <span class="col-xl-1">Hi,visitor.</span>
+        <a class="nav-item nav-link btn btn-outline-info col-xl-1" id="Login" href="/user/login">Log in</a>
+    </div>
+</nav>
+
+<!--jumbotron-->
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Real Estate Rental System</h1>
+        <p class="lead">Real Estate Rental Management System is a web-based system to facilitate flatshare and
+            finding roommates.</p>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+
+    <% rentals.forEach( function(model) { %>
+    <div class="card col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div class="container">
+            <br>
+            <h4><a href="rental/details/<%=  model.id %>"><%= model.propertyTitle %></a></h4>
+            <div class="row">
+                <div class="imgWidth col-12 col-sm-12 col-md-4 col-lg-5 col-xl-4">
+                    <img class="rounded" src="<%= model.imageURL %>" style="object-fit: cover;" />
+                </div>
+                <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-8">
+                    <ul class="list-group ">
+                        <li class="list-group-item"><b>Estate: </b><%= model.estate %></li>
+                        <li class="list-group-item"><b>Gross Area: </b><%= model.grossArea %> sq feet</li>
+                        <li class="list-group-item"><b>Rent: </b>$<%= model.rent %></li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+        </div>
+
+    </div>
+    <% }); %>
+
+</div>
+<br>
+
+<script>
+    // control width and height of images
+    var h = $(".list-group").height();
+    var w = $(".imgWidth").width();
+    document.querySelectorAll("img").forEach(function (item) {
+        item.setAttribute("height", ($(window).width() >= 768) ? h : 'auto');
+        item.setAttribute("width", w)
+    });
+
+</script>
