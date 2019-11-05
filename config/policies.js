@@ -23,6 +23,8 @@ module.exports.policies = {
 
     '*': true,
     create: 'isAdmin',
+    delete: 'isAdmin',
+    update: 'isAdmin',
     admin: 'isAdmin',
 
   },
