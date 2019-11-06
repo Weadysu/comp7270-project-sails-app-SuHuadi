@@ -62,6 +62,11 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
+    rentedBy: {
+      collection: 'User',
+      via: 'rentHouseOf'
+    },
+
   },
 
 };

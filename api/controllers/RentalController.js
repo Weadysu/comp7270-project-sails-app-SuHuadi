@@ -183,6 +183,21 @@ module.exports = {
         return res.view('rental/visitor/search', { rentals: models, count: numOfPage });
 
     },
+
+    // myRental function
+    myRental: async function (req, res) {
+        console.log(req.session.username);
+        var models = await User.findOne({username: req.session.username}).populate("rentHouseOf");;
+        console.log(models);
+
+        if (!models) return res.notFound();
+
+        return res.view('rental/client/myRental', { rentals: models.rentHouseOf });
+
+    },
+
+
+
 };
 
 

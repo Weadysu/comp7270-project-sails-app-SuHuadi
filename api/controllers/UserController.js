@@ -6,7 +6,39 @@
  */
 
 module.exports = {
-  
+
+    // action - signup
+    signup: async function (req, res) {
+        console.log(0);
+        if (req.method == "GET") return res.view('user/signup');
+        console.log(1);
+        if (!req.body.username || !req.body.password) return res.badRequest();
+
+        const hash = await sails.bcrypt.hash(req.body.password, 10);
+
+        await User.create({
+            username: req.body.username,
+            password: hash
+        });
+
+        req.session.regenerate(function (err) {
+
+            if (err) return res.serverError(err);
+
+            req.session.username = req.body.username;
+
+            sails.log("[Session] ", req.session);
+
+            if (req.wantsJSON) {
+                return res.json({ message: "Signup successfully.", url: '/' });    // for ajax request
+            };
+
+            return res.ok("Login successfully.");
+
+        });
+
+    },
+
     // action - login
     login: async function (req, res) {
 
@@ -32,8 +64,8 @@ module.exports = {
 
             sails.log("[Session] ", req.session);
 
-            if (req.wantsJSON){
-                return res.json({message: "Login successfully.", url: '/'});    // for ajax request
+            if (req.wantsJSON) {
+                return res.json({ message: "Login successfully.", url: '/' });    // for ajax request
             };
 
             return res.ok("Login successfully.");
@@ -44,12 +76,17 @@ module.exports = {
 
     // action - logout
     logout: async function (req, res) {
-
+        console.log(3)
         req.session.destroy(function (err) {
 
             if (err) return res.serverError(err);
 
-            return res.redirect("/");
+            if (req.wantsJSON) {
+                return res.json({ message: "Logout successfully.", url: '/' });    // for ajax request
+            };
+
+            return res.ok('Login successfully.');
+            
 
         });
     },
