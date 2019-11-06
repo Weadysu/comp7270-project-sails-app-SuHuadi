@@ -1,8 +1,5 @@
 <!--index.ejs-->
 
-<%- include('../components/nav') %>
-<%- include('../components/jumbotron') %>
-
 <div class="row">
 
     <% rentals.forEach( function(model) { %>
@@ -32,11 +29,11 @@
 <br>
 
 <script>
-// control width and height of images
+    // control width and height of images
     var h = $(".list-group").height();
     var w = $(".imgWidth").width();
     document.querySelectorAll("img").forEach(function (item) {
-        item.setAttribute("height", ($(window).width() >= 768)? h:'auto');
+        item.setAttribute("height", ($(window).width() >= 768) ? h : 'auto');
         item.setAttribute("width", w)
     });
 
