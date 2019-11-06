@@ -86,7 +86,7 @@ module.exports = {
             };
 
             return res.ok('Login successfully.');
-            
+
 
         });
     },
@@ -137,6 +137,17 @@ module.exports = {
         await User.removeFromCollection(req.params.id, "supervises").members(req.params.fk);
 
         return res.ok('Operation completed.');
+
+    },
+
+    // myRental function
+    myRental: async function (req, res) {
+
+        var models = await User.findOne({ username: req.session.username }).populate('rentHouseOf');;
+
+        if (!models) return res.notFound();
+
+        return res.view('rental/client/myRental', { rentals: models.rentHouseOf });
 
     },
 

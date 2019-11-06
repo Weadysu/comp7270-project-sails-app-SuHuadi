@@ -184,18 +184,16 @@ module.exports = {
 
     },
 
-    // myRental function
-    myRental: async function (req, res) {
-        console.log(req.session.username);
-        var models = await User.findOne({username: req.session.username}).populate("rentHouseOf");;
-        console.log(models);
+    // occupants: function
+    occupants: async function(req, res) {
+        
+        var models = await Rental.findOne(req.params.id).populate('rentedBy');
 
         if (!models) return res.notFound();
-
-        return res.view('rental/client/myRental', { rentals: models.rentHouseOf });
-
-    },
-
+        // console.log(models.rentedBy)
+        // return res.json(models.rentedBy);
+        return res.view('rental/admin/occupants', { rentals: models.rentedBy });
+    }
 
 
 };

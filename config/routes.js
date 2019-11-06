@@ -31,7 +31,8 @@ module.exports.routes = {
   'GET /rental/search': 'RentalController.search',
   'GET /rental/admin': 'RentalController.admin',
   'GET /rental/json': 'RentalController.json',
-  'GET /rental/myRental': 'RentalController.myRental',
+  'GET /rental/myRental': 'UserController.myRental',
+  'GET /rental/occupants/:id': 'RentalController.occupants',
 
   'POST /rental/': 'RentalController.create',
   'GET /rental/:id': 'RentalController.details',

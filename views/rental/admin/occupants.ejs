@@ -1,0 +1,16 @@
+<!--admin.ejs-->
+
+<%- include('../components/nav') %>
+<%- include('../components/jumbotron') %>
+
+<table class="table">
+    <% c = 1 %>
+    <% rentals.forEach(function(model) { %>
+    <tr>
+        <td><%= c %></td>
+        <td><%= model.username %></td>
+    <tr>
+        <%  c += 1; %>
+        <%  }); %>
+</table>
+
