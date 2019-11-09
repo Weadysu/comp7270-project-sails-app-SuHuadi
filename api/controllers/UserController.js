@@ -76,7 +76,7 @@ module.exports = {
 
     // action - logout
     logout: async function (req, res) {
-        console.log(3)
+        
         req.session.destroy(function (err) {
 
             if (err) return res.serverError(err);
@@ -96,8 +96,6 @@ module.exports = {
 
         var model = await User.findOne(req.params.id).populate("supervises", { id: 9999 });
 
-        // console.log("length", model.supervises.length);
-
         if (!model) return res.notFound();
 
         return res.json(model);
@@ -106,7 +104,7 @@ module.exports = {
 
     // action - add
     add: async function (req, res) {
-        
+    
         if (!await User.findOne(req.params.fk)) return res.notFound();
 
         const thatRental = await Rental.findOne(req.params.id).populate("rentedBy", { id: req.params.fk });
@@ -121,13 +119,20 @@ module.exports = {
 
         await User.addToCollection(req.params.fk, "rentHouseOf").members(req.params.id);
 
-        return res.ok('Operation completed.');
+        if (req.wantsJSON) {
+
+            var newUrl = '/user/' + req.params.id + '/rentedBy/remove/' + req.params.fk;
+            return res.json({ message: "Co-Rented successfully.", url: newUrl });    // for ajax request
+
+        };
+
+        return res.ok('Co-Rented successfully.');
 
     },
 
     // action - remove
     remove: async function (req, res) {
-
+     
         if (!await User.findOne(req.params.fk)) return res.notFound();
 
         const thatRental = await Rental.findOne(req.params.id).populate("rentedBy", { id: req.params.fk });
@@ -139,7 +144,13 @@ module.exports = {
 
         await User.removeFromCollection(req.params.fk, "rentHouseOf").members(req.params.id);
 
-        return res.ok('Operation completed.');
+        if (req.wantsJSON) {
+            var newUrl = '/user/' + req.params.id + '/rentedBy/add/' + req.params.fk;
+         
+            return res.json({ message: "Canceled successfully.", url: newUrl });    // for ajax request
+        };
+
+        return res.ok('Canceled successfully.');
 
     },
 

@@ -24,11 +24,11 @@
                     <% if (numOfClients == rental.expectedTenants) { %>
                         <button type="button" class="btn btn-primary float-right mt-2">Full</button>
                     <% } else if(isRented) { %>
-                    <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="POST">
+                    <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="POST" onsubmit="submitForm(this);return false">
                         <button type="submit" class="btn btn-primary float-right mt-2">Cancel</button>
                     </form>
                     <% } else { %>
-                    <form action="/user/<%= rental.id %>/rentedBy/add/<%= thisUserId %>" method="POST">
+                    <form action="/user/<%= rental.id %>/rentedBy/add/<%= thisUserId %>" method="POST" onsubmit="submitForm(this);return false">
                         <button type="submit" class="btn btn-primary float-right mt-2">Co-Rent</button>
                     </form>
                     <% }; %>
@@ -44,5 +44,25 @@
 </div>
 
 <script>
-    
+    async function submitForm(oFormElement){
+        
+        var response = await fetch(oFormElement.action, {
+            method: oFormElement.method,
+            credentials: 'same-origin',
+            body: new FormData(oFormElement),
+        });
+        
+        if (response.ok) {
+            var data = await response.json();   // for res.ok() or res.json()
+            alert(data.message);
+            oFormElement.firstElementChild.innerHTML = (oFormElement.firstElementChild.innerHTML == 'Co-Rent')? 'Cancel':'Co-Rent';
+            oFormElement.action = data.url;
+        } else if (response.status == 401) {
+            var data = await response.text();   // for res.send()
+            alert(data);
+        } else {
+            alert(response.statusText);
+        };
+    };
+  
 </script>
