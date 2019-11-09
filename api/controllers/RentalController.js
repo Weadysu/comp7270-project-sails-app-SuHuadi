@@ -31,11 +31,8 @@ module.exports = {
             limit: 4,
             sort: 'id DESC'
         })
-        if (req.session.username) {
-            return res.view('rental/logined/index', { rentals: models });
-        };
 
-        return res.view('rental/visitor/index', { rentals: models });
+        return res.view('rental/index', { rentals: models });
 
     },
 
@@ -45,13 +42,8 @@ module.exports = {
 
         if (!model) return res.notFound();
 
-        if (req.session.username) {
+        return res.view('rental/details', { rental: model });
 
-            return res.view('rental/logined/details', { rental: model });
-
-        };
-
-        return res.view('rental/visitor/details', { rental: model });
 
     },
 
@@ -106,7 +98,7 @@ module.exports = {
 
         if (models.length == 0) return res.notFound();
 
-        return res.ok("Person Deleted.");
+        return res.ok("Rental Deleted.");
 
     },
 
@@ -174,19 +166,14 @@ module.exports = {
         };
 
         var numOfPage = Math.min(Math.ceil(numOfItems / numOfItemsPerPage), 6);
-        if (req.session.username) {
 
-            return res.view('rental/logined/search', { rentals: models, count: numOfPage });
-
-        };
-
-        return res.view('rental/visitor/search', { rentals: models, count: numOfPage });
+        return res.view('rental/search', { rentals: models, count: numOfPage });
 
     },
 
     // occupants: function
-    occupants: async function(req, res) {
-        
+    occupants: async function (req, res) {
+
         var models = await Rental.findOne(req.params.id).populate('rentedBy');
 
         if (!models) return res.notFound();

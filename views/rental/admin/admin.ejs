@@ -1,8 +1,5 @@
 <!--admin.ejs-->
 
-<%- include('../components/nav') %>
-<%- include('../components/jumbotron') %>
-
 <% const current = parseInt(req.query.page) || 1; %>
 <table class="table">
     <% c = 1 + numOfItemsPerPage * (current - 1) %>
@@ -10,9 +7,14 @@
     <tr>
         <td><%= c %></td>
         <td><%= model.propertyTitle %></td>
-        <td><%= model.Estate %></td>
+        <td><%= model.estate %></td>
         <td><a href="/rental/occupants/<%= model.id %>">Occupants</a></td>
         <td><a href="/rental/update/<%= model.id %>">Edit</a>></td>
+        <td>
+            <form action="/rental/delete/<%= model.id %>" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</a>>
+            </form>
+        </td>
     <tr>
         <%  c += 1; %>
         <%  }); %>
