@@ -43,11 +43,12 @@ module.exports.routes = {
   'POST /user/signup': 'UserController.signup',
   'GET /user/login': 'UserController.login',
   'POST /user/login': 'UserController.login',
-  'POST /user/logout': 'UserController.logout',
-  'GET /person/:id/worksFor': 'PersonController.populate',
-  'GET /user/:id/supervises': 'UserController.populate',
-  'POST /user/:id/supervises/add/:fk': 'UserController.add',
-  'POST /user/:id/supervises/remove/:fk': 'UserController.remove',
+  'GET /user/logout': 'UserController.logout',
+  'GET /user/rentedBy/:id': 'RentalController.add',
+
+  'GET /user/:id/rentHouseOf': 'UserController.populate',
+  'POST /user/:id/rentedBy/add/:fk': 'UserController.add',
+  'POST /user/:id/rentedBy/remove/:fk': 'UserController.remove',
 
   /***************************************************************************
   *                                                                          *

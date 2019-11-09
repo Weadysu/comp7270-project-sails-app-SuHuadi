@@ -42,8 +42,29 @@ module.exports = {
 
         if (!model) return res.notFound();
 
-        return res.view('rental/details', { rental: model });
+        if (!req.session.username || req.session.username == 'admin') {
 
+            return res.view('rental/details', { rental: model });
+
+        } else {
+            // console.log(req.params.id)
+            var thatRental = await Rental.findOne({ 'id': req.params.id }).populate('rentedBy');
+            var thisUser = await User.findOne({ username: req.session.username }).populate('rentHouseOf', {id: req.params.id});
+
+            var numOfClients = thatRental.rentedBy.length;
+            var thisUserId = thisUser.id;
+            var isRented = thisUser.rentHouseOf.length;
+            // console.log(isRented)
+            return res.view('rental/details', {
+
+                rental: model,
+                thisUserId: thisUserId,
+                isRented : isRented,
+                numOfClients: numOfClients
+
+            });
+
+        };
 
     },
 

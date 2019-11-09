@@ -106,17 +106,20 @@ module.exports = {
 
     // action - add
     add: async function (req, res) {
+        
+        if (!await User.findOne(req.params.fk)) return res.notFound();
 
-        if (!await User.findOne(req.params.id)) return res.notFound();
+        const thatRental = await Rental.findOne(req.params.id).populate("rentedBy", { id: req.params.fk });
 
-        const thatPerson = await Person.findOne(req.params.fk).populate("worksFor", { id: req.params.id });
+        if (!thatRental) return res.notFound();
 
-        if (!thatPerson) return res.notFound();
+        var model = await Rental.findOne(req.params.fk);
 
-        if (thatPerson.worksFor.length)
+        if (thatRental.rentedBy.length) {
             return res.status(409).send("Already added.");   // conflict
+        };
 
-        await User.addToCollection(req.params.id, "supervises").members(req.params.fk);
+        await User.addToCollection(req.params.fk, "rentHouseOf").members(req.params.id);
 
         return res.ok('Operation completed.');
 
@@ -125,16 +128,16 @@ module.exports = {
     // action - remove
     remove: async function (req, res) {
 
-        if (!await User.findOne(req.params.id)) return res.notFound();
+        if (!await User.findOne(req.params.fk)) return res.notFound();
 
-        const thatPerson = await Person.findOne(req.params.fk).populate("worksFor", { id: req.params.id });
+        const thatRental = await Rental.findOne(req.params.id).populate("rentedBy", { id: req.params.fk });
 
-        if (!thatPerson) return res.notFound();
+        if (!thatRental) return res.notFound();
 
-        if (!thatPerson.worksFor.length)
+        if (!thatRental.rentedBy.length)
             return res.status(409).send("Nothing to delete.");    // conflict
 
-        await User.removeFromCollection(req.params.id, "supervises").members(req.params.fk);
+        await User.removeFromCollection(req.params.fk, "rentHouseOf").members(req.params.id);
 
         return res.ok('Operation completed.');
 

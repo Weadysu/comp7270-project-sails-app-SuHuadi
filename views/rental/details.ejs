@@ -5,17 +5,44 @@
         <h1><%= rental.propertyTitle %></h1>
         <div class="row">
             <img class="img-fluid col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8" src="<%= rental.imageURL %>" />
-            <ul class="list-group col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <li class="list-group-item"><b>Estate: </b><%= rental.estate %></li>
-                <li class="list-group-item"><b>Gross Area: </b><%= rental.grossArea %> sq feet</li>
-                <li class="list-group-item"><b>Rent: </b>$<%= rental.rent %></li>
-                <li class="list-group-item"><b>Bedrooms: </b><%= rental.bedrooms %></li>
-                <li class="list-group-item"><b>Expected Tenants: </b><%= rental.expectedTenants %></li>
-                <li class="list-group-item"><b>Created: </b><%= rental.createDate %></li>
-                <li class="list-group-item"><b>Updated: </b><%= rental.updateDate %></li>
-            </ul>
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <ul class="list-group ">
+                    <li class="list-group-item"><b>Estate: </b><%= rental.estate %></li>
+                    <li class="list-group-item"><b>Gross Area: </b><%= rental.grossArea %> sq feet</li>
+                    <li class="list-group-item"><b>Rent: </b>$<%= rental.rent %></li>
+                    <li class="list-group-item"><b>Bedrooms: </b><%= rental.bedrooms %></li>
+                    <li class="list-group-item"><b>Expected Tenants: </b><%= rental.expectedTenants %></li>
+                    <li class="list-group-item"><b>Created: </b><%= rental.createDate %></li>
+                    <li class="list-group-item"><b>Updated: </b><%= rental.updateDate %></li>
+                </ul>
+
+                <% if (!req.session.username) {%> 
+                <form action="/user/login" method="GET">
+                    <button type="submit" class="btn btn-primary float-right mt-2">Co-Rent</button>
+                </form>
+                <% } else if (req.session.username != 'admin') { %>
+                    <% if (numOfClients == rental.expectedTenants) { %>
+                        <button type="button" class="btn btn-primary float-right mt-2">Full</button>
+                    <% } else if(isRented) { %>
+                    <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="POST">
+                        <button type="submit" class="btn btn-primary float-right mt-2">Cancel</button>
+                    </form>
+                    <% } else { %>
+                    <form action="/user/<%= rental.id %>/rentedBy/add/<%= thisUserId %>" method="POST">
+                        <button type="submit" class="btn btn-primary float-right mt-2">Co-Rent</button>
+                    </form>
+                    <% }; %>
+                <% } else {}; %>
+
+
+            </div>
         </div>
+
     </div>
 </div>
 <br><br><br><br>
 </div>
+
+<script>
+    
+</script>
