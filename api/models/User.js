@@ -38,6 +38,11 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
+    rentHouseOf: {
+      collection: 'Rental',
+      via: 'rentedBy'
+    },
+
   },
 
   customToJSON: function () {
