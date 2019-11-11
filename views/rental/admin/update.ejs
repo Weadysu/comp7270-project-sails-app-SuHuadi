@@ -1,10 +1,7 @@
 <!--update.ejs-->
 
-<%- include('../components/nav') %>
-<%- include('../components/jumbotron') %>
-
 <!-- form for updating -->
-<form action="/rental/update/<%= rental.id %>" method="POST">
+<form action="/rental/<%= rental.id %>" method="PUT">
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
             <label>Property title:</label>
@@ -63,7 +60,7 @@
 </form>
 
 <!-- form for deleting -->
-<form action="/rental/delete/<%= rental.id %>" method="POST">
+<form action="/rental/<%= rental.id %>" method="DELETE">
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
             <br>

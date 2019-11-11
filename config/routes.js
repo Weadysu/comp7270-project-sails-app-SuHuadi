@@ -19,36 +19,30 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  // routes for Rental api
   '/': 'RentalController.index',
   'GET /rental/index': 'RentalController.index',
-  'GET /rental/create': 'RentalController.create',
-  'POST /rental/create': 'RentalController.create',
-  'GET /rental/details/:id': 'RentalController.details',
-  'POST /rental/details/:id': 'RentalController.details',
-  'GET /rental/update/:id': 'RentalController.update',
-  'POST /rental/update/:id': 'RentalController.update',
-  'POST /rental/delete/:id': 'RentalController.delete',
   'GET /rental/search': 'RentalController.search',
   'GET /rental/admin': 'RentalController.admin',
   'GET /rental/json': 'RentalController.json',
-  'GET /rental/myRental': 'UserController.myRental',
   'GET /rental/occupants/:id': 'RentalController.occupants',
-
+  'GET /rental/create': 'RentalController.create',
   'POST /rental/': 'RentalController.create',
   'GET /rental/:id': 'RentalController.details',
+  'GET /rental/update/:id': 'RentalController.update',
   'PUT /rental/:id': 'RentalController.update',
   'DELETE /rental/:id': 'RentalController.delete',
 
+  // routes for User api
   'GET /user/signup': 'UserController.signup',
   'POST /user/signup': 'UserController.signup',
   'GET /user/login': 'UserController.login',
   'POST /user/login': 'UserController.login',
   'GET /user/logout': 'UserController.logout',
-  'GET /user/rentedBy/:id': 'RentalController.add',
-
-  'GET /user/:id/rentHouseOf': 'UserController.populate',
+  'GET /user/myRental': 'UserController.myRental',
+  'GET /user/:id': 'UserController.populate',
   'POST /user/:id/rentedBy/add/:fk': 'UserController.add',
-  'POST /user/:id/rentedBy/remove/:fk': 'UserController.remove',
+  'DELETE /user/:id/rentedBy/remove/:fk': 'UserController.remove',
 
   /***************************************************************************
   *                                                                          *

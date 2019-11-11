@@ -24,7 +24,7 @@
                     <% if (numOfClients == rental.expectedTenants) { %>
                         <button type="button" class="btn btn-primary float-right mt-2">Full</button>
                     <% } else if(isRented) { %>
-                    <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="POST" onsubmit="submitForm(this);return false">
+                    <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="DELETE" onsubmit="submitForm(this);return false">
                         <button type="submit" class="btn btn-primary float-right mt-2">Cancel</button>
                     </form>
                     <% } else { %>
