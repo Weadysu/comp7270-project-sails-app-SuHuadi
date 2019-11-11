@@ -25,7 +25,7 @@
                         <button type="button" class="btn btn-primary float-right mt-2">Full</button>
                     <% } else if(isRented) { %>
                     <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="DELETE" onsubmit="submitForm(this);return false">
-                        <button type="submit" class="btn btn-primary float-right mt-2">Cancel</button>
+                        <button type="submit" class="btn btn-primary float-right mt-2">Move-out</button>
                     </form>
                     <% } else { %>
                     <form action="/user/<%= rental.id %>/rentedBy/add/<%= thisUserId %>" method="POST" onsubmit="submitForm(this);return false">
