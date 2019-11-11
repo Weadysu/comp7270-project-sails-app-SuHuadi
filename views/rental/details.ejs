@@ -45,9 +45,9 @@
 
 <script>
     async function submitForm(oFormElement){
-        
+        var method = (oFormElement.firstElementChild.innerHTML == 'Co-Rent')? 'POST':'DELETE';
         var response = await fetch(oFormElement.action, {
-            method: oFormElement.method,
+            method: method,
             credentials: 'same-origin',
             body: new FormData(oFormElement),
         });
@@ -57,6 +57,7 @@
             alert(data.message);
             oFormElement.firstElementChild.innerHTML = (oFormElement.firstElementChild.innerHTML == 'Co-Rent')? 'Cancel':'Co-Rent';
             oFormElement.action = data.url;
+            
         } else if (response.status == 401) {
             var data = await response.text();   // for res.send()
             alert(data);
