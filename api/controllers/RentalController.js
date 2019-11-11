@@ -44,7 +44,11 @@ module.exports = {
 
         if (!req.session.username || req.session.username == 'admin') {
 
-            return res.view('rental/details', { rental: model });
+            var thatRental = await Rental.findOne({ 'id': req.params.id }).populate('rentedBy');
+
+            var numOfClients = thatRental.rentedBy.length;
+
+            return res.view('rental/details', { rental: model, numOfClients: numOfClients });
 
         } else {
             // console.log(req.params.id)

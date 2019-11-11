@@ -81,12 +81,7 @@ module.exports = {
 
             if (err) return res.serverError(err);
 
-            if (req.wantsJSON) {
-                return res.json({ message: "Logout successfully.", url: '/' });    // for ajax request
-            };
-
-            return res.ok('Login successfully.');
-
+            return res.redirect('/user/login');
 
         });
     },
