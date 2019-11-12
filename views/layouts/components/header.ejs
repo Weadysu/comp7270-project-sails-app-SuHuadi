@@ -1,26 +1,23 @@
 <!--nav.ejs-->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
+    <div class="pl-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
     <% if (!req.session.username) { %>
-
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-
-            <div class="navbar-nav col-xl-10">
-                <a class="nav-item nav-link" id="Home" href="/">Home</a>
-                <a class="nav-item nav-link" id="Search" href="/rental/search">Search</a>
-            </div>
-            <a class="nav-item nav-link col-xl-1" id="Login" href="/user/login">Sign in</a>
-            <a class="nav-item nav-link btn btn-outline-info col-xl-1" id="Login" href="/user/signup">Sign up</a>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav col-lg-8 col-xl-10">
+            <a class="nav-item nav-link" id="Home" href="/">Home</a>
+            <a class="nav-item nav-link" id="Search" href="/rental/search">Search</a>
         </div>
-    </nav>
+    </div>
+    <a class="nav-item nav-link col-4 col-lg-2 col-xl-1" id="Login" href="/user/login">Sign in</a>
+    <a class="nav-item nav-link btn btn-outline-info col-5 col-lg-2 col-xl-1" id="Login" href="/user/signup">Sign up</a>
 
     <% } else if (req.session.username == 'admin') { %>
-
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav col-xl-10">
             <a class="nav-item nav-link" id="Home" href="/">Home</a>
@@ -28,22 +25,20 @@
             <a class="nav-item nav-link" id="Create" href="/rental/create">Create</a>
             <a class="nav-item nav-link" id="Admin" href="/rental/admin">Admin</a>
         </div>
-        <span class="col-xl-1">Hi,<%= req.session.username %>.</span>
-        <a class="nav-item nav-link btn btn-outline-info col-xl-1" href="/user/logout">Log out</a>
     </div>
+    <span class="col-4 col-lg-2 col-xl-1">Hi,<%= req.session.username %>.</span>
+    <a class="nav-item nav-link btn btn-outline-info col-5 col-lg-2 col-xl-1" href="/user/logout">Log out</a>
 
     <% } else { %>
-
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav col-xl-10">
             <a class="nav-item nav-link" id="Home" href="/">Home</a>
             <a class="nav-item nav-link" id="Search" href="/rental/search">Search</a>
             <a class="nav-item nav-link" id="My Rentals" href="/user/myRental">My Rentals</a>
         </div>
-        <span class="col-xl-1">Hi,<%= req.session.username %>.</span>
-        <a class="nav-item nav-link btn btn-outline-info col-xl-1" href="/user/logout">Log out</a>
     </div>
-
+    <span class="col-4 col-lg-2 col-xl-1">Hi,<%= req.session.username %>.</span>
+    <a class="nav-item nav-link btn btn-outline-info col-5 col-lg-2 col-xl-1" href="/user/logout">Log out</a>
     <% }; %>
 </nav>
 
