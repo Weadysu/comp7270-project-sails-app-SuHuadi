@@ -6,12 +6,12 @@
     <% rentals.forEach(function(model) { %>
     <tr>
         <td><%= c %></td>
-        <td><%= model.propertyTitle %></td>
+        <td><a href="/rental/<%= model.id %>"><%= model.propertyTitle %></a></td>
         <td><%= model.estate %></td>
         <td><a href="/rental/occupants/<%= model.id %>">Occupants</a></td>
         <td><a href="/rental/update/<%= model.id %>">Edit</a>></td>
         <td>
-            <form action="/rental/delete/<%= model.id %>" method="POST">
+            <form action="/rental/<%= model.id %>" method="POST" onsubmit="delRental(this);return false;">
                 <button type="submit" class="btn btn-danger">Delete</a>>
             </form>
         </td>
@@ -39,3 +39,20 @@
     </ul>
 </nav>
 </div>
+
+<script>
+
+    async function delRental(oFormElement) {
+
+        var r = confirm('Confirm Cancel?');
+        if (r) {
+            var response = await fetch(oFormElement.action, {
+                method: 'DELETE',
+                credentials: 'same-origin',
+                body: new FormData(oFormElement)
+            });
+            oFormElement.parentNode.parentNode.remove();
+        };
+    };
+
+</script>
