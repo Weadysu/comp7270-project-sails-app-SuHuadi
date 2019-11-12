@@ -38,7 +38,6 @@
                     <% }; %>
                 <% } else {}; %>
 
-
             </div>
         </div>
 
@@ -49,12 +48,23 @@
 
 <script>
     async function submitForm(oFormElement){
-        var method = (oFormElement.firstElementChild.innerHTML == 'Co-Rent')? 'POST':'DELETE';
-        var response = await fetch(oFormElement.action, {
-            method: method,
+
+        if (oFormElement.firstElementChild.innerHTML == 'Co-Rent') {
+            var response = await fetch(oFormElement.action, {
+            method: 'POST',
             credentials: 'same-origin',
-            body: new FormData(oFormElement),
-        });
+            body: new FormData(oFormElement)
+            });
+        } else {
+            var r = confirm('Confirm Cancel?');
+            if (r){
+                var response = await fetch(oFormElement.action, {
+                method: 'DELETE',
+                credentials: 'same-origin',
+                body: new FormData(oFormElement)
+                });
+            } else return;
+        };
         
         if (response.ok) {
             var data = await response.json();   // for res.ok() or res.json()
