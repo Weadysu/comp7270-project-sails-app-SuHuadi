@@ -19,25 +19,30 @@
                 <% if (!req.session.username) {%> 
                     <% if(numOfClients != rental.expectedTenants) { %>
                         <form action="/user/login" method="GET">
-                            <button type="submit" class="btn btn-primary float-right mt-2">Co-Rent</button>
+                            <button type="submit" class="btn btn-primary float-right mt-2 mb-2">Co-Rent</button>
                         </form>
                     <% } else{ %>
-                        <button type="button" class="btn btn-secondary float-right mt-2">Full</button>
+                        <button type="button" class="btn btn-secondary float-right mt-2 mb-2">Full</button>
                     <% }; %>
                 <% } else if (req.session.username != 'admin') { %>
                     <% if (isRented) { %>
                         <form action="/user/<%= rental.id %>/rentedBy/remove/<%= thisUserId %>" method="DELETE" onsubmit="submitForm(this);return false">
-                            <button type="submit" class="btn btn-primary float-right mt-2">Move-out</button>
+                            <button type="submit" class="btn btn-primary float-right mt-2 mb-2">Move-out</button>
                         </form>
                     <% } else if(numOfClients == rental.expectedTenants) { %>
-                        <button type="button" class="btn btn-secondary float-right mt-2">Full</button>
+                        <button type="button" class="btn btn-secondary float-right mt-2 mb-2">Full</button>
                     <% } else { %>
                     <form action="/user/<%= rental.id %>/rentedBy/add/<%= thisUserId %>" method="POST" onsubmit="submitForm(this);return false">
-                        <button type="submit" class="btn btn-primary float-right mt-2">Co-Rent</button>
+                        <button type="submit" class="btn btn-primary float-right mt-2 mb-2">Co-Rent</button>
                     </form>
                     <% }; %>
-                <% } else {}; %>
-
+                <% } else { %>
+                    <% if(numOfClients == rental.expectedTenants) { %>
+                        <button type="button" class="btn btn-secondary float-right mt-2 mb-2">Full</button>
+                    <% } else { %>
+                        <button type="button" class="btn btn-secondary float-right mt-2 mb-2"> Not Full</button>
+                    <% }; %>
+                <% }; %>
             </div>
         </div>
 
