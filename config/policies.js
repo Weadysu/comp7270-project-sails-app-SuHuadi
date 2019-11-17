@@ -26,13 +26,14 @@ module.exports.policies = {
     delete: 'isAdmin',
     update: 'isAdmin',
     admin: 'isAdmin',
-    myRental: 'isClient'
+    
 
   },
 
   UserController: {
 
     '*':true,
+    myRental: 'isClient'
 
   }
 
