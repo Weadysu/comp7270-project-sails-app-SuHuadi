@@ -56,7 +56,7 @@
             body: new FormData(oFormElement)
             });
         } else {
-            var r = confirm('Confirm Cancel?');
+            var r = confirm('Confirm Move-out?');
             if (r){
                 var response = await fetch(oFormElement.action, {
                 method: 'DELETE',
@@ -69,7 +69,7 @@
         if (response.ok) {
             var data = await response.json();   // for res.ok() or res.json()
             alert(data.message);
-            oFormElement.firstElementChild.innerHTML = (oFormElement.firstElementChild.innerHTML == 'Co-Rent')? 'Cancel':'Co-Rent';
+            oFormElement.firstElementChild.innerHTML = (oFormElement.firstElementChild.innerHTML == 'Co-Rent')? 'Move-out':'Co-Rent';
             oFormElement.action = data.url;
             
         } else if (response.status == 401) {
