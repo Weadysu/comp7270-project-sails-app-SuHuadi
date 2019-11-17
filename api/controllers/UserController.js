@@ -106,11 +106,12 @@ module.exports = {
 
         if (!thatRental) return res.notFound();
 
-        var model = await Rental.findOne(req.params.fk);
-
         if (thatRental.rentedBy.length) {
             return res.status(409).send("Already added.");   // conflict
         };
+
+        const anotherThatRental = await Rental.findOne(req.params.id).populate("rentedBy");
+        if (anotherThatRental.expectedTenants == anotherThatRental.rentedBy.length) return res.forbidden(); // illegal
 
         await User.addToCollection(req.params.fk, "rentHouseOf").members(req.params.id);
 
