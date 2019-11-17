@@ -111,7 +111,7 @@
     var w = $(".imgWeight").width();
 
     document.querySelectorAll("img").forEach(function (item) {
-        item.height = 1.1 * imgH;
+        item.setAttribute("height", ($(window).width() >= 768) ? 1.1 * imgH : 'auto');
         item.setAttribute("width", w);
     });
 
