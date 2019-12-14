@@ -56,6 +56,8 @@ module.exports = {
 
         if (!match) return res.status(401).send("Wrong Password");
 
+        var thisUser = await User.findOne({ username: req.body.username })
+        
         req.session.regenerate(function (err) {
 
             if (err) return res.serverError(err);
@@ -65,7 +67,7 @@ module.exports = {
             sails.log("[Session] ", req.session);
 
             if (req.wantsJSON) {
-                return res.json({ message: "Login successfully.", url: '/' });    // for ajax request
+                return res.json({ message: "Login successfully.", url: '/', userId: thisUser.id });    // for ajax request
             };
 
             return res.ok("Login successfully.");
@@ -80,6 +82,12 @@ module.exports = {
         req.session.destroy(function (err) {
 
             if (err) return res.serverError(err);
+
+            if (req.wantsJSON) {
+
+                return res.ok();    // for ajax request
+    
+            };
 
             return res.redirect('/user/login');
 
@@ -111,14 +119,18 @@ module.exports = {
         };
 
         const anotherThatRental = await Rental.findOne(req.params.id).populate("rentedBy");
-        if (anotherThatRental.expectedTenants == anotherThatRental.rentedBy.length) return res.forbidden(); // illegal
+        var isFull = (anotherThatRental.expectedTenants == anotherThatRental.rentedBy.length);
+        console.log(isFull);
+        if (!isFull) {
 
-        await User.addToCollection(req.params.fk, "rentHouseOf").members(req.params.id);
+            await User.addToCollection(req.params.fk, "rentHouseOf").members(req.params.id);
+
+        };
 
         if (req.wantsJSON) {
 
             var newUrl = '/user/' + req.params.id + '/rentedBy/remove/' + req.params.fk;
-            return res.json({ message: "Co-Rented successfully.", url: newUrl });    // for ajax request
+            return res.json({ message: "Co-Rented successfully.", url: newUrl, isFull: isFull });    // for ajax request
 
         };
 
@@ -157,6 +169,11 @@ module.exports = {
 
         if (!models) return res.notFound();
 
+        if (req.wantsJSON) {
+            console.log(models.rentHouseOf);
+            return res.json(models.rentHouseOf);    // for ajax request
+        };
+    
         return res.view('rental/client/myRental', { rentals: models.rentHouseOf });
 
     },

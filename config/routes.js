@@ -23,6 +23,7 @@ module.exports.routes = {
   '/': 'RentalController.index',
   'GET /rental/index': 'RentalController.index',
   'GET /rental/search': 'RentalController.search',
+  'GET /rental/searchForApp': 'RentalController.searchForApp',
   'GET /rental/admin': 'RentalController.admin',
   'GET /rental/json': 'RentalController.json',
   'GET /rental/occupants/:id': 'RentalController.occupants',

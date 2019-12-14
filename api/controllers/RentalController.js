@@ -32,6 +32,12 @@ module.exports = {
             sort: 'id DESC'
         })
 
+        if (req.wantsJSON) {
+            // console.log('wantJson');
+            return res.json(models);    // for ajax request
+
+        };
+        // console.log('Do not wantJson');
         return res.view('rental/index', { rentals: models });
 
     },
@@ -59,6 +65,16 @@ module.exports = {
             var thisUserId = thisUser.id;
             var isRented = thisUser.rentHouseOf.length;
             // console.log(isRented)
+            if (req.wantsJSON) {
+                return res.json({
+
+                    rental: model,
+                    thisUserId: thisUserId,
+                    isRented : isRented,
+                    numOfClients: numOfClients
+    
+                });
+            }
             return res.view('rental/details', {
 
                 rental: model,
@@ -142,6 +158,44 @@ module.exports = {
         return res.view('rental/admin/admin', { rentals: models, count: numOfPage, numOfItemsPerPage: numOfItemsPerPage });
     },
 
+    // searchForApp function
+    searchForApp: async function (req, res) {
+
+        const qEstate = req.query.estate || '';
+        const qBedrooms = parseInt(req.query.bedrooms);
+
+        // for ajax request
+        if (req.wantsJSON) {
+            if (isNaN(qBedrooms)) {
+    
+                var models = await Rental.find({
+                    estate: qEstate,
+                });
+    
+            } else {
+                if (qBedrooms == 2) {
+                    var where = {
+                        bedrooms: {'<=': 2}
+                    };
+                } else {
+                    var where = {
+                        bedrooms: {'>': 2}
+                    };
+                }
+    
+                var models = await Rental.find({
+                    where: where,
+                });
+            };
+            
+            return res.json(models); // return json
+
+        };
+
+        return res.ok();
+
+    },
+
     // search function
     search: async function (req, res) {
 
@@ -154,6 +208,7 @@ module.exports = {
         const qMinRent = parseInt(req.query.minRent) || 0;
         const qMaxRent = parseInt(req.query.maxRent) || 100000;
 
+        // for normal request
         if (isNaN(qBedrooms)) {
             var where = {
                 estate: { contains: qEstate },
