@@ -120,7 +120,7 @@ module.exports = {
 
         const anotherThatRental = await Rental.findOne(req.params.id).populate("rentedBy");
         var isFull = (anotherThatRental.expectedTenants == anotherThatRental.rentedBy.length);
-        console.log(isFull);
+        // console.log(isFull);
         if (!isFull) {
 
             await User.addToCollection(req.params.fk, "rentHouseOf").members(req.params.id);
